@@ -8,7 +8,7 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
-// 测试连接
+// Test connection endpoint
 app.get('/api/test', async (req, res) => {
     const isConnected = await testConnection();
     res.json({ 
@@ -17,7 +17,7 @@ app.get('/api/test', async (req, res) => {
     });
 });
 
-// 获取首页活动
+// Get homepage events
 app.get('/api/events/home', async (req, res) => {
     try {
         const [rows] = await pool.query(`
@@ -36,7 +36,7 @@ app.get('/api/events/home', async (req, res) => {
     }
 });
 
-// 搜索活动
+// Search events with filters
 app.get('/api/events/search', async (req, res) => {
     try {
         const { date, location, category } = req.query;
@@ -51,16 +51,19 @@ app.get('/api/events/search', async (req, res) => {
         
         const params = [];
         
+        // Add date filter if provided
         if (date) {
             query += ' AND e.event_date = ?';
             params.push(date);
         }
         
+        // Add location filter if provided
         if (location) {
             query += ' AND e.location LIKE ?';
             params.push(`%${location}%`);
         }
         
+        // Add category filter if provided
         if (category) {
             query += ' AND c.name = ?';
             params.push(category);
@@ -76,7 +79,7 @@ app.get('/api/events/search', async (req, res) => {
     }
 });
 
-// 获取活动详情
+// Get event details by ID
 app.get('/api/events/:id', async (req, res) => {
     try {
         const eventId = req.params.id;
@@ -100,7 +103,7 @@ app.get('/api/events/:id', async (req, res) => {
     }
 });
 
-// 获取所有类别
+// Get all event categories
 app.get('/api/categories', async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT * FROM categories ORDER BY name');
@@ -111,6 +114,7 @@ app.get('/api/categories', async (req, res) => {
     }
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
     testConnection();
