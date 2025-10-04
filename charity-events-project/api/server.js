@@ -12,10 +12,10 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// 静态文件服务配置 - 放在路由前面
+// Static file serving configuration - placed before routes
 app.use(express.static(path.join(__dirname, '../client')));
 
-// API 路由
+// API Routes
 // Test connection endpoint
 app.get('/api/test', async (req, res) => {
     const isConnected = await testConnection();
@@ -119,7 +119,7 @@ app.get('/api/categories', async (req, res) => {
     }
 });
 
-// 页面路由 - 修复路径
+// Page routes - fixed paths
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../client/index.html"));
 });
@@ -132,7 +132,7 @@ app.get("/event-details", (req, res) => {
     res.sendFile(path.join(__dirname, "../client/event-details.html"));
 });
 
-// 启动服务器
+// Start server
 app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
     console.log(`📁 Serving static files from: ${path.join(__dirname, '../client')}`);
