@@ -1,13 +1,21 @@
 const express = require('express');
 const cors = require('cors');
 const { pool, testConnection } = require('./event_db');
+const bodyParser = require('body-parser');
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
+// 静态文件服务配置 - 放在路由前面
+app.use(express.static(path.join(__dirname, '../client')));
+
+// API 路由
 // Test connection endpoint
 app.get('/api/test', async (req, res) => {
     const isConnected = await testConnection();
@@ -36,7 +44,7 @@ app.get('/api/events/home', async (req, res) => {
     }
 });
 
-// Search events with filters
+// Search events
 app.get('/api/events/search', async (req, res) => {
     try {
         const { date, location, category } = req.query;
@@ -51,19 +59,16 @@ app.get('/api/events/search', async (req, res) => {
         
         const params = [];
         
-        // Add date filter if provided
         if (date) {
             query += ' AND e.event_date = ?';
             params.push(date);
         }
         
-        // Add location filter if provided
         if (location) {
             query += ' AND e.location LIKE ?';
             params.push(`%${location}%`);
         }
         
-        // Add category filter if provided
         if (category) {
             query += ' AND c.name = ?';
             params.push(category);
@@ -79,7 +84,7 @@ app.get('/api/events/search', async (req, res) => {
     }
 });
 
-// Get event details by ID
+// Get event details
 app.get('/api/events/:id', async (req, res) => {
     try {
         const eventId = req.params.id;
@@ -103,7 +108,7 @@ app.get('/api/events/:id', async (req, res) => {
     }
 });
 
-// Get all event categories
+// Get all categories
 app.get('/api/categories', async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT * FROM categories ORDER BY name');
@@ -114,8 +119,25 @@ app.get('/api/categories', async (req, res) => {
     }
 });
 
-// Start the server
+// 页面路由 - 修复路径
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/index.html"));
+});
+
+app.get("/search", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/search.html"));
+});
+
+app.get("/event-details", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/event-details.html"));
+});
+
+// 启动服务器
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+    console.log(`📁 Serving static files from: ${path.join(__dirname, '../client')}`);
+    console.log(`🏠 Homepage: http://localhost:${PORT}/`);
+    console.log(`🔍 Search page: http://localhost:${PORT}/search`);
+    console.log(`📋 Event details: http://localhost:${PORT}/event-details`);
     testConnection();
 });
