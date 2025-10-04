@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Charity - Home</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-logo">❤️ Heart Charity</h1>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="search.html" class="nav-link">Search Events</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Making the World Better with Love and Hope</h2>
+                <p>Join our charity events and make a difference for people in need</p>
+                <a href="search.html" class="cta-button">Explore Events</a>
+            </div>
+        </section>
+
+        <!-- Organization Info -->
+        <section class="organization-info">
+            <div class="container">
+                <h3>About Us</h3>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h4>Our Mission</h4>
+                        <p>Helping underprivileged children and families create a better future. Raising funds through charity events to support education and medical projects.</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>Contact Us</h4>
+                        <p>📧 contact@heartcharity.org<br>
+                           📞 +61 2 1234 5678<br>
+                           📍 Sydney, NSW 2000</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events List -->
+        <section class="events-section">
+            <div class="container">
+                <h3>Upcoming Charity Events</h3>
+                <div id="events-container" class="events-grid">
+                    <!-- Dynamically loaded event cards -->
+                    <div class="loading">Loading events...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Heart Charity Foundation. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>
